@@ -20,11 +20,11 @@ from student import views as student_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('',student_views.index),
+    path('',student_views.index),
     path('login/',student_views.StudentLoginView.as_view()),
-    # path('logout/',student_views.logout),
-    # path('change_pwd/',student_views.changepwd),
-    # path('score/<str:score_id>',student_views.score,name="score"),
-    # path('about/',student_views.about),
-    # path('contact/',student_views.contact)
+    path('logout/',student_views.logout),
+    path('change_pwd/',student_views.changepwd),
+    path('score/<str:score_id>',student_views.score,name="score"),
+    path('about/',student_views.about),
+    path('contact/',student_views.contact)
 ]

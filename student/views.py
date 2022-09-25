@@ -6,7 +6,7 @@ from django.views import View
 from django.contrib import messages
 
 from score.models import Score
-from student.forms import StudentLoginForm
+from student.forms import StudentLoginForm, ChangepwdForm
 from student.models import Student
 
 
@@ -69,6 +69,30 @@ def index(request):
 
 
 @login_required
+def changepwd(request):
+    if request.method == 'GET':
+        form = ChangepwdForm() # 实例化表单类
+        return render(request, 'changepwd.html', {'form': form}) # 渲染模板
+    else:
+        form = ChangepwdForm(request.POST) # 接收Form表单
+        # 验证表单
+        if form.is_valid():
+            username = request.user.username # 获取用户名
+            oldpassword = request.POST.get('oldpassword', '') # 获取原始密码
+            user = authenticate(username=username, password=oldpassword) # 授权校验
+            if user is not None and user.is_active:
+                # 保存新密码
+                newpassword = request.POST.get('newpassword1', '') # 获取新密码
+                user.set_password(newpassword) # 设置新密码
+                user.save() # 保存用户信息
+            else:
+                messages.add_message(request, messages.ERROR, '原始密码错误') # 提示错误消息
+                return render(request, 'changepwd.html', {'form': form}) # 渲染模板
+        else:
+            return render(request, 'changepwd.html', {'form': form}) # 渲染模板
+
+
+@login_required
 def score(request, score_id):
     """
     成绩详情
@@ -81,3 +105,16 @@ def score(request, score_id):
     except:
         return render(request,'404.html', {"errmsg":'数据异常'})
     return render(request,'score.html',{'score':score})
+
+
+def about(request):
+    """
+    关于我们
+    """
+    return render(request,'about.html')  # 渲染模板
+
+def contact(request):
+    """
+    联系我们
+    """
+    return render(request,'contact.html')  # 渲染模板
