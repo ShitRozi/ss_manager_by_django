@@ -77,7 +77,7 @@ def score(request, score_id):
     :return:
     """
     try:
-        score= Score.object.get(id=score_id)
+        score= Score.objects.get(id=score_id)
     except:
         return render(request,'404.html', {"errmsg":'数据异常'})
     return render(request,'score.html',{'score':score})

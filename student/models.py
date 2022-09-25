@@ -14,7 +14,7 @@ class Student(CreateUpdateMixin):
     birthday = models.DateField(verbose_name="出生日期")
     # user表一对一关联
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # teacher表以对多关联
+    # teacher表一对多关联
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)  # 设置外键
 
     def __str__(self):
